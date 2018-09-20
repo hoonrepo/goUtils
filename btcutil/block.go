@@ -79,7 +79,28 @@ func (b *Block) GetPrevHash() string{
 
 
 
-//
+/*
+	https://en.bitcoin.it/wiki/Block_hashing_algorithm
+	$header_hex = $version . $prevBlockHash . $rootHash . $time . $bits . $nonce;
+
+
+	125552
+
+	>>> import hashlib
+	>>> header_hex = ("01000000" +
+	 "81cd02ab7e569e8bcd9317e2fe99f2de44d49ab2b8851ba4a308000000000000" +
+	 "e320b6c2fffc8d750423db8b1eb942ae710e951ed797f7affc8892b0f1fc122b" +
+	//2b12fcf1b09288fcaff797d71e950e71ae42b91e8bdb2304758dfcffc2b620e3
+	 "c7f5d74d" +
+	 "f2b9441a" +  //1a44b9f2
+	 "42a14695")	//9546a142
+	>>> header_bin = header_hex.decode('hex')
+	>>> hash = hashlib.sha256(hashlib.sha256(header_bin).digest()).digest()
+	>>> hash.encode('hex_codec')
+	'1dbd981fe6985776b644b173a4d0385ddc1aa2a829688d1e0000000000000000'
+	>>> hash[::-1].encode('hex_codec')
+	'00000000000000001e8d6829a8a21adc5d38d0a473b144b6765798e61f98bd1d'
+	 */
 func (b *Block) POW() (blockHash string,err error){
 
 	blockHash = "nil string"
